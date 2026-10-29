@@ -331,7 +331,7 @@ def halaman_klasifikasi():
         image_bytes = st.session_state["gambar_asli_bytes"]
 
         _, kiri, kanan, _ = st.columns(
-            [0.5, 1, 1.6, 0.5], gap="xsmall", vertical_alignment="center"
+            [0.5, 1, 1.6, 0.5], gap="small", vertical_alignment="center"
         )
 
         with kiri:
@@ -339,7 +339,7 @@ def halaman_klasifikasi():
                 st.image(
                     Image.open(BytesIO(image_bytes)).convert("RGB"),
                     caption="Gambar yang diklasifikasikan",
-                    width=260,  # atur lebar gambar di sini
+                    width=260,
                 )
 
         with kanan:

@@ -413,10 +413,16 @@ div.stButton>button p {
 [data-testid="stImage"] img {
     height: auto !important;
     max-height: 300px !important;
-    /* batas tinggi maksimal */
     width: auto !important;
     max-width: 100% !important;
     object-fit: contain !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stImage"] [data-testid="StyledFullScreenButton"],
+[data-testid="stImage"] button,
+[data-testid="stElementToolbar"] {
+    display: none !important;
 }
 
 div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:has([data-testid="stImage"])>div {
