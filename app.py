@@ -158,7 +158,7 @@ def tampilkan_gambar_serupa(kunci, nama):
 def tampilkan_galeri(kunci, nama):
     _, tambahan = cari_gambar_motif(kunci)
 
-    @st.dialog(f"Motif {nama}", width="large")
+    @st.dialog(f"Motif {nama}", width="small")
     def _dialog():
         st.markdown(
             grid_gambar_html(tambahan, nama, "galeri-grid"),
@@ -471,36 +471,43 @@ def halaman_informasi():
             str(data.get("sejarah", "Informasi sejarah belum ditambahkan."))
         )
 
-        utama, tambahan = cari_gambar_motif(key)
+        _, tambahan = cari_gambar_motif(key)
+        utama = gambar_utama(key)
 
         if utama:
             uri = gambar_ke_data_uri(str(utama), 500)
-            img_html = f'<img src="{uri}" alt="{nama}">'
+            img_html = (
+                f'<div class="info-img"><img src="{uri}" alt="{nama}"></div>'
+            )
         else:
-            img_html = '<div class="motif-noimg">Foto belum ada</div>'
+            img_html = '<div class="info-img motif-noimg">Foto belum ada</div>'
 
         hint = (
-            '<p class="info-hint">Klik untuk melihat foto motif lainnya</p>'
+            '<p class="info-hint">Klik gambar untuk melihat foto motif lainnya</p>'
             if tambahan else ""
         )
 
-        kartu = (
-            '<div class="info-card">'
-            f'<div class="info-img">{img_html}</div>'
-            '<div class="info-body">'
-            f'<h3>{nama}</h3>'
-            f'<p class="info-daerah"><b>Asal daerah:</b> {daerah}</p>'
-            f'<p class="info-sejarah">{sejarah}</p>'
-            f'{hint}'
-            '</div></div>'
-        )
-
         with st.container(key=f"infokartu_{key}"):
-            st.markdown(kartu, unsafe_allow_html=True)
-            if tambahan:
-                # tombol transparan yang menutupi seluruh kartu (lihat CSS)
-                if st.button("Lihat galeri", key=f"galeri_{key}"):
-                    tampilkan_galeri(key, nama_raw)
+            col_img, col_teks = st.columns(
+                [1, 3], gap="medium", vertical_alignment="center"
+            )
+
+            with col_img:
+                with st.container(key=f"infogambar_{key}"):
+                    st.markdown(img_html, unsafe_allow_html=True)
+                    if tambahan:
+                        if st.button("⤢", key=f"galeri_{key}", help="Lihat gambar motif lainnya"):
+                            tampilkan_galeri(key, nama_raw)
+
+            with col_teks:
+                st.markdown(
+                    f'<div class="info-body">'
+                    f'<h3>{nama}</h3>'
+                    f'<p class="info-daerah"><b>Asal daerah:</b> {daerah}</p>'
+                    f'<p class="info-sejarah">{sejarah}</p>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
 
 # Navigasi
 PAGES = {
