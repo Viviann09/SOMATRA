@@ -220,11 +220,13 @@ div.stButton>button p {
 }
 
 /* Halaman Klasifikasi */
-.st-key-panel_hasil {
+.st-key-wadah_hasil {
+    max-width: 1000px;
+    margin: 0 auto;
     border: 2px solid #E6D9C3;
-    border-radius: 12px;
+    border-radius: 16px;
     background: #FFFCF7;
-    padding: 24px;
+    padding: 24px 32px;
     box-sizing: border-box;
 }
 
@@ -391,31 +393,42 @@ div.stButton>button p {
     text-align: justify;
     line-height: 1.7;
     color: #404040;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 8px;
 }
 
-.st-key-btn_beranda {
-    display: flex;
+.st-key-aksi_hasil {
+    display: flex !important;
+    flex-direction: row !important;
     justify-content: center;
+    align-items: center;
+    gap: 12px !important;
     width: 100%;
-    margin-top: 24px;
+    margin-top: 16px;
 }
 
-.st-key-btn_beranda div.stButton {
-    width: auto;
+.st-key-aksi_hasil [data-testid="stElementContainer"],
+.st-key-aksi_hasil div.stButton {
+    width: auto !important;
 }
 
 [data-testid="stImage"] {
-    max-width: 260px !important;
+    width: 240px !important;
+    max-width: 100% !important;
+}
+
+[data-testid="stImage"]>div,
+[data-testid="stImage"] figure {
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 [data-testid="stImage"] img {
+    display: block;
+    width: 100% !important;
     height: auto !important;
-    max-height: 300px !important;
-    width: auto !important;
-    max-width: 100% !important;
-    object-fit: contain !important;
+    max-height: 280px !important;
+    object-fit: cover !important;
     border-radius: 12px !important;
 }
 
@@ -425,8 +438,29 @@ div.stButton>button p {
     display: none !important;
 }
 
-div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:has([data-testid="stImage"])>div {
-    align-items: flex-end;
+
+.serupa-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 220px));
+    justify-content: center;
+    gap: 14px;
+    max-width: 1000px;
+    margin: 16px auto 0;
+}
+
+.serupa-item {
+    border: 2px solid #E6D9C3;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #FFFCF7;
+    aspect-ratio: 1 / 1;
+}
+
+.serupa-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* Footer */
@@ -446,11 +480,51 @@ div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:has([data-test
 }
 
 /* Halaman Informasi */
-.info-list {
+div[class*="st-key-infokartu_"] {
+    position: relative;
+    width: 100%;
     max-width: 1100px;
     margin: 0 auto;
 }
 
+div[class*="st-key-infokartu_"] .info-card {
+    margin-bottom: 0;
+    transition: border-color 0.15s;
+}
+
+div[class*="st-key-infokartu_"]:hover .info-card {
+    border-color: #7A1F2B;
+}
+
+/* tombol transparan menutupi seluruh kartu */
+div[class*="st-key-infokartu_"] [data-testid="stElementContainer"]:has(button) {
+    position: absolute !important;
+    inset: 0;
+    z-index: 2;
+    margin: 0 !important;
+}
+
+div[class*="st-key-infokartu_"] div.stButton,
+div[class*="st-key-infokartu_"] div.stButton>button {
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.info-hint {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: #7A1F2B !important;
+    font-weight: 600;
+}
+
+/* Galeri popup */
+.galeri-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
 .info-card {
     display: flex;
     align-items: center;
@@ -526,6 +600,16 @@ div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:has([data-test
     .stApp {
         overflow-x: hidden;
     }
+
+    .serupa-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+   .galeri-grid {
+       grid-template-columns: repeat(2, 1fr);
+       gap: 8px;
+   }
 
     [data-testid="stMainBlockContainer"] {
         padding-top: 5rem !important;
@@ -664,46 +748,45 @@ div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:has([data-test
         font-size: 12px;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_upload)>div:not(:has(.st-key-panel_upload)),
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:not(:has(.st-key-panel_hasil)):not(:has([data-testid="stImage"])) {
+    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_upload)>div:not(:has(.st-key-panel_upload)) {
         display: none !important;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil) {
+    div[data-testid="stHorizontalBlock"]:has(.sejarah-teks) {
         flex-direction: column !important;
         flex-wrap: nowrap !important;
         align-items: stretch !important;
         gap: 1rem !important;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div {
+    div[data-testid="stHorizontalBlock"]:has(.sejarah-teks)>div {
         flex: 0 0 auto !important;
         width: 100% !important;
         min-width: 0 !important;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil)>div:has([data-testid="stImage"])>div {
+    div[data-testid="stHorizontalBlock"]:has(.sejarah-teks)>div:has([data-testid="stImage"])>div {
         align-items: center !important;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil) [data-testid="stElementContainer"]:has([data-testid="stImage"]) {
+    div[data-testid="stHorizontalBlock"]:has(.sejarah-teks) [data-testid="stElementContainer"]:has([data-testid="stImage"]) {
         width: 200px !important;
         max-width: 100% !important;
         margin-left: auto !important;
         margin-right: auto !important;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil) [data-testid="stElementContainer"]:has([data-testid="stImage"]) * {
+    div[data-testid="stHorizontalBlock"]:has(.sejarah-teks) [data-testid="stElementContainer"]:has([data-testid="stImage"]) * {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
     }
 
-    div[data-testid="stHorizontalBlock"]:has(.st-key-panel_hasil) [data-testid="stImageCaption"] {
+    div[data-testid="stHorizontalBlock"]:has(.sejarah-teks) [data-testid="stImageCaption"] {
         text-align: center !important;
     }
 
-    .st-key-panel_hasil {
+    .st-key-wadah_hasil {
         padding: 16px;
     }
 

@@ -92,6 +92,81 @@ JUMLAH_TAMPIL = 4
 MAKS_UKURAN_MB = 5
 FORMAT_DIIZINKAN = (".jpg", ".jpeg", ".png")
 
+FOLDER_MOTIF = BASE_DIR / "assets" / "motif"
+JUMLAH_SERUPA = 4
+EKSTENSI_GAMBAR = {".jpg", ".jpeg", ".png"}
+
+def slug_motif(kunci):
+    """kain_songket_jambi_angsa_duo -> angsa_duo"""
+    bagian = kunci.split("_", 3)
+    return bagian[3] if len(bagian) == 4 else kunci
+
+def cari_gambar_motif(kunci):
+    """Kembalikan (gambar_utama, [gambar_1 .. gambar_9])."""
+    slug = slug_motif(kunci)
+    folder = FOLDER_MOTIF / slug
+    if not folder.is_dir():
+        return None, []
+
+    utama = None
+    tambahan = []
+    for p in folder.iterdir():
+        if p.suffix.lower() not in EKSTENSI_GAMBAR:
+            continue
+        stem = p.stem.lower()
+        if stem == slug:
+            utama = p
+        elif stem.startswith(slug + "_") and stem[len(slug) + 1:].isdigit():
+            tambahan.append((int(stem[len(slug) + 1:]), p))
+
+    tambahan.sort(key=lambda x: x[0])
+    return utama, [p for _, p in tambahan]
+
+def gambar_utama(kunci):
+    return cari_gambar_motif(kunci)[0]
+
+def grid_gambar_html(files, alt, kelas):
+    alt = html.escape(alt)
+    item = []
+    for p in files:
+        uri = gambar_ke_data_uri(str(p), 500)
+        item.append(
+            f'<div class="serupa-item"><img src="{uri}" alt="{alt}"></div>'
+        )
+    return f'<div class="{kelas}">' + "".join(item) + "</div>"
+
+def tampilkan_gambar_serupa(kunci, nama):
+    _, tambahan = cari_gambar_motif(kunci)
+    if not tambahan:
+        return
+
+    # acak sekali per hasil klasifikasi, lalu disimpan
+    pilihan = st.session_state.get("serupa_pilihan")
+    if pilihan is None or pilihan.get("kunci") != kunci:
+        terpilih = random.sample(tambahan, min(JUMLAH_SERUPA, len(tambahan)))
+        pilihan = {"kunci": kunci, "files": [str(p) for p in terpilih]}
+        st.session_state["serupa_pilihan"] = pilihan
+
+    files = [Path(p) for p in pilihan["files"]]
+    st.markdown(
+        '<div class="section-heading" style="text-align:center;">'
+        'Motif Serupa dengan Hasil Klasifikasi</div>'
+        + grid_gambar_html(files, nama, "serupa-grid"),
+        unsafe_allow_html=True,
+    )
+
+def tampilkan_galeri(kunci, nama):
+    _, tambahan = cari_gambar_motif(kunci)
+
+    @st.dialog(f"Motif {nama}", width="large")
+    def _dialog():
+        st.markdown(
+            grid_gambar_html(tambahan, nama, "galeri-grid"),
+            unsafe_allow_html=True,
+        )
+
+    _dialog()
+
 @st.cache_data
 def gambar_ke_data_uri(path_str, lebar_maks=800):
     img = Image.open(path_str).convert("RGB")
@@ -113,6 +188,7 @@ def pindah_halaman(nama):
 def reset_klasifikasi():
     st.session_state["hasil_klasifikasi"] = None
     st.session_state["gambar_asli_bytes"] = None
+    st.session_state["serupa_pilihan"] = None
     st.session_state["upload_key"] += 1
 
 def kembali_ke_beranda():
@@ -234,7 +310,7 @@ def halaman_beranda():
             data = MOTIF_DATA[key]
             nama = html.escape(data.get("nama", format_nama(key)))
             daerah = html.escape(data.get("daerah", "Daerah belum diisi"))
-            image_path = path_gambar_motif(data.get("gambar", ""))
+            image_path = gambar_utama(key)
 
             if image_path:
                 uri = gambar_ke_data_uri(str(image_path))
@@ -330,20 +406,20 @@ def halaman_klasifikasi():
         info = hasil["info"]
         image_bytes = st.session_state["gambar_asli_bytes"]
 
-        _, kiri, kanan, _ = st.columns(
-            [0.5, 1, 1.6, 0.5], gap="small", vertical_alignment="center"
-        )
+        with st.container(key="wadah_hasil"):
+            kiri, kanan = st.columns(
+                [1, 2.6], gap="large", vertical_alignment="center"
+            )
 
-        with kiri:
-            if image_bytes:
-                st.image(
-                    Image.open(BytesIO(image_bytes)).convert("RGB"),
-                    caption="Gambar yang diklasifikasikan",
-                    width=260,
-                )
+            with kiri:
+                if image_bytes:
+                    st.image(
+                        Image.open(BytesIO(image_bytes)).convert("RGB"),
+                        caption="Gambar yang diklasifikasikan",
+                        width=240,
+                    )
 
-        with kanan:
-            with st.container(key="panel_hasil"):
+            with kanan:
                 st.markdown(f"**Nama Motif:** {info['nama']}")
                 st.markdown(f"**Asal Daerah:** {info['daerah']}")
                 st.markdown(
@@ -356,11 +432,19 @@ def halaman_klasifikasi():
                     unsafe_allow_html=True,
                 )
 
-        st.button(
-            "Kembali ke Beranda",
-            key="btn_beranda",
-            on_click=kembali_ke_beranda,
-        )
+            with st.container(key="aksi_hasil"):
+                st.button(
+                    "Kembali ke Beranda",
+                    key="btn_beranda",
+                    on_click=kembali_ke_beranda,
+                )
+                st.button(
+                    "Klasifikasi Ulang",
+                    key="btn_ulang",
+                    on_click=reset_klasifikasi,
+                )
+
+        tampilkan_gambar_serupa(hasil["nama_kunci"], info["nama"])
 
 # Halaman Informasi
 def halaman_informasi():
@@ -377,36 +461,46 @@ def halaman_informasi():
 
     if not items:
         st.info("Belum ada data motif yang tersedia.")
-    else:
-        kartu = []
-        for key, data in items:
-            nama = html.escape(data.get("nama", format_nama(key)))
-            daerah = html.escape(data.get("daerah", "Informasi belum tersedia"))
-            sejarah = html.escape(
-                str(data.get("sejarah", "Informasi sejarah belum ditambahkan."))
-            )
-            image_path = path_gambar_motif(data.get("gambar", ""))
+        return
 
-            if image_path:
-                uri = gambar_ke_data_uri(str(image_path), 500)
-                img_html = f'<img src="{uri}" alt="{nama}">'
-            else:
-                img_html = '<div class="motif-noimg">Foto belum ada</div>'
-
-            kartu.append(
-                '<div class="info-card">'
-                f'<div class="info-img">{img_html}</div>'
-                f'<div class="info-body">'
-                f'<h3>{nama}</h3>'
-                f'<p class="info-daerah"><b>Asal daerah:</b> {daerah}</p>'
-                f'<p class="info-sejarah">{sejarah}</p>'
-                f'</div></div>'
-            )
-
-        st.markdown(
-            '<div class="info-list">' + "".join(kartu) + "</div>",
-            unsafe_allow_html=True,
+    for key, data in items:
+        nama_raw = data.get("nama", format_nama(key))
+        nama = html.escape(nama_raw)
+        daerah = html.escape(data.get("daerah", "Informasi belum tersedia"))
+        sejarah = html.escape(
+            str(data.get("sejarah", "Informasi sejarah belum ditambahkan."))
         )
+
+        utama, tambahan = cari_gambar_motif(key)
+
+        if utama:
+            uri = gambar_ke_data_uri(str(utama), 500)
+            img_html = f'<img src="{uri}" alt="{nama}">'
+        else:
+            img_html = '<div class="motif-noimg">Foto belum ada</div>'
+
+        hint = (
+            '<p class="info-hint">Klik untuk melihat foto motif lainnya</p>'
+            if tambahan else ""
+        )
+
+        kartu = (
+            '<div class="info-card">'
+            f'<div class="info-img">{img_html}</div>'
+            '<div class="info-body">'
+            f'<h3>{nama}</h3>'
+            f'<p class="info-daerah"><b>Asal daerah:</b> {daerah}</p>'
+            f'<p class="info-sejarah">{sejarah}</p>'
+            f'{hint}'
+            '</div></div>'
+        )
+
+        with st.container(key=f"infokartu_{key}"):
+            st.markdown(kartu, unsafe_allow_html=True)
+            if tambahan:
+                # tombol transparan yang menutupi seluruh kartu (lihat CSS)
+                if st.button("Lihat galeri", key=f"galeri_{key}"):
+                    tampilkan_galeri(key, nama_raw)
 
 # Navigasi
 PAGES = {
