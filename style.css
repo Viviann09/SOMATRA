@@ -668,6 +668,68 @@ div[class*="st-key-infogambar_"] [data-testid="stElementContainer"]:has(button) 
     bottom: 16px;
 }
 
+.st-key-filter_daerah {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.st-key-filter_daerah [data-testid="stElementContainer"],
+.st-key-filter_daerah [data-testid="stButtonGroup"] {
+    width: auto !important;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.st-key-filter_daerah [data-testid="stButtonGroup"] {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+.st-key-filter_daerah [data-testid="stButtonGroup"] button {
+    background: #FFFCF7 !important;
+    background-color: #FFFCF7 !important;
+    border: 1px solid #E6D9C3 !important;
+    border-radius: 999px !important;
+    min-height: 38px !important;
+    padding: 4px 20px !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.st-key-filter_daerah [data-testid="stButtonGroup"] button *,
+.st-key-filter_daerah [data-testid="stButtonGroup"] button p {
+    color: #404040 !important;
+    font-size: 14px !important;
+    font-weight: 500;
+}
+
+.st-key-filter_daerah [data-testid="stButtonGroup"] button:hover {
+    background: #F5EDE0 !important;
+    border-color: #7A1F2B !important;
+}
+
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[aria-checked="true"],
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[aria-pressed="true"],
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[kind="pillsActive"],
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[data-testid="stBaseButton-pillsActive"] {
+    background: #7A1F2B !important;
+    background-color: #7A1F2B !important;
+    border-color: #7A1F2B !important;
+    box-shadow: none !important;
+}
+
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[aria-checked="true"] *,
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[aria-pressed="true"] *,
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[kind="pillsActive"] *,
+.st-key-filter_daerah [data-testid="stButtonGroup"] button[data-testid="stBaseButton-pillsActive"] * {
+    color: #FAF6EF !important;
+}
+
 @media (max-width: 800px) {
 
     .info-img {

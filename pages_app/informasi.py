@@ -11,6 +11,8 @@ from shared import (
     tampilkan_galeri,
 )
 
+SEMUA = "Semua"
+
 # Halaman Informasi
 def halaman_informasi():
     reset_klasifikasi()
@@ -26,6 +28,44 @@ def halaman_informasi():
 
     if not items:
         st.info("Belum ada data motif yang tersedia.")
+        return
+
+    daerah_list = []
+    for _, data in items:
+        d = data.get("daerah", "Informasi belum tersedia")
+        if d not in daerah_list:
+            daerah_list.append(d)
+    pilihan_filter = [SEMUA] + daerah_list
+
+    with st.container(key="filter_daerah"):
+        if hasattr(st, "pills"):
+            terpilih = st.pills(
+                "Filter daerah",
+                pilihan_filter,
+                default=SEMUA,
+                key="filter_daerah_pilihan",
+                label_visibility="collapsed",
+            )
+        else:
+            terpilih = st.radio(
+                "Filter daerah",
+                pilihan_filter,
+                horizontal=True,
+                key="filter_daerah_pilihan",
+                label_visibility="collapsed",
+            )
+
+    if terpilih is None:
+        terpilih = SEMUA
+
+    if terpilih != SEMUA:
+        items = [
+            (k, d) for k, d in items
+            if d.get("daerah", "Informasi belum tersedia") == terpilih
+        ]
+
+    if not items:
+        st.info("Tidak ada motif untuk daerah ini.")
         return
 
     for key, data in items:
