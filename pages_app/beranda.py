@@ -54,9 +54,52 @@ def halaman_beranda():
             f'<div class="hero-img">{hero_img}</div>',
             unsafe_allow_html=True,
         )
+        
+    st.markdown(
+        '<div class="tentang-band">'
+        '<div class="tentang-heading">Mengenal Kain Songket Sumatra</div>'
+        '<p class="tentang-intro">'
+        'Songket adalah kain tenun yang dihiasi benang emas atau perak, '
+        'sehingga motifnya tampak timbul dan berkilau. Kain ini bisa kita '
+        'temui di banyak daerah di Nusantara, seperti Bali, Lombok, '
+        'Kalimantan, dan Sulawesi. Namun songket Sumatra punya cerita dan '
+        'ciri khasnya sendiri, dan di sinilah kamu bisa mengenalnya lebih '
+        'dekat.'
+        '</p>'
+        '<div class="tentang-grid">'
+        '<div class="tentang-card">'
+        '<div class="tentang-no">01</div>'
+        '<div class="tentang-judul">Tenun Buatan Tangan</div>'
+        '<p>Setiap motif dibuat dengan menyisipkan benang tambahan ke kain '
+        'dasar, helai demi helai, seluruhnya dengan tangan. Karena itu, '
+        'selembar songket bisa memakan waktu berminggu-minggu untuk '
+        'selesai.</p>'
+        '</div>'
+        '<div class="tentang-card">'
+        '<div class="tentang-no">02</div>'
+        '<div class="tentang-judul">Motif yang Bermakna</div>'
+        '<p>Di Sumatra, songket hadir di momen penting seperti pernikahan, '
+        'penyambutan tamu, dan upacara adat. Motifnya bukan sekadar hiasan, '
+        'tetapi membawa pesan tentang kesetiaan, kebersamaan, dan '
+        'kerendahan hati.</p>'
+        '</div>'
+        '<div class="tentang-card">'
+        '<div class="tentang-no">03</div>'
+        '<div class="tentang-judul">Setiap Daerah Berbeda</div>'
+        '<p>Aceh, Jambi, Minangkabau, Palembang, dan Riau masing-masing '
+        'punya motif dan warna khas, banyak yang terinspirasi dari bunga, '
+        'hewan, dan alam sekitar. Di daerah lain seperti Bali dan Lombok, '
+        'songket punya corak dan fungsi yang berbeda sesuai adat '
+        'setempat.</p>'
+        '</div>'
+        '</div>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
 
     st.markdown(
-        '<div class="section-heading">Galeri Motif Songket</div>',
+        '<div class="section-heading" style="text-align:center;">'
+        'Galeri Motif Songket</div>',
         unsafe_allow_html=True,
     )
 
@@ -115,3 +158,32 @@ def halaman_beranda():
         on_click=pindah_halaman,
         args=("Informasi",),
     )
+    
+    pdf_path = path_gambar_motif("assets/panduan/manual_book.pdf")
+
+    with st.container(key="panduan_band"):
+        kiri, kanan = st.columns(
+            [2.5, 1], gap="large", vertical_alignment="center"
+        )
+
+        with kiri:
+            st.markdown(
+                '<div class="panduan-judul">Panduan Penggunaan</div>'
+                '<p class="panduan-teks">'
+                'Unduh buku panduan untuk mempelajari cara menggunakan '
+                'website ini.'
+                '</p>',
+                unsafe_allow_html=True,
+            )
+
+        with kanan:
+            if pdf_path:
+                st.download_button(
+                    label="Unduh Panduan (PDF)",
+                    data=pdf_path.read_bytes(),
+                    file_name="Panduan_SOMATRA.pdf",
+                    mime="application/pdf",
+                    key="unduh_panduan",
+                )
+            else:
+                st.caption("Buku panduan belum tersedia.")

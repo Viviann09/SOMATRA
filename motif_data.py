@@ -22,7 +22,7 @@ MOTIF_DATA = {
     "kain_songket_minangkabau_biku_biku": {
             "nama": "Biku-Biku",
             "daerah": "Minangkabau",
-            "sejarah": "Motif biku-biku memiliki bentuk hiasan berupa garis-garis lengkung. Motif ini menggambarkan bahwa perjalanan hidup manusia tidak selelu berjalan dengan mudah dan sering kali menghadapi berbagai tantangan. Oleh karena itu, setiap orang terus berusaha untuk memperbaiki kehidupannya karena sesuatu yang diinginkan tidak bisa diperoleh tanpa usaha [27] . Selain itu, motif biku-biku juga mengandung pesan agar manusia tidak bersikap sombong, angkuh, atau merasa lebih tinggi daripada orang lain. Makna ini mengingatkan agar setiap orang selalu menyadari diri sendiri dan tetap rendah hati dalam menjalani kehidupan.",
+            "sejarah": "Motif biku-biku memiliki bentuk hiasan berupa garis-garis lengkung. Motif ini menggambarkan bahwa perjalanan hidup manusia tidak selelu berjalan dengan mudah dan sering kali menghadapi berbagai tantangan. Oleh karena itu, setiap orang terus berusaha untuk memperbaiki kehidupannya karena sesuatu yang diinginkan tidak bisa diperoleh tanpa usaha. Selain itu, motif biku-biku juga mengandung pesan agar manusia tidak bersikap sombong, angkuh, atau merasa lebih tinggi daripada orang lain. Makna ini mengingatkan agar setiap orang selalu menyadari diri sendiri dan tetap rendah hati dalam menjalani kehidupan.",
         },
     "kain_songket_minangkabau_itik_pulang_patang": {
             "nama": "Itik Pulang Patang",

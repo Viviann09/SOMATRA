@@ -15,7 +15,7 @@
     max-width: 100% !important;
     width: 100% !important;
     padding-top: 5rem !important;
-    padding-bottom: 5rem !important;
+    padding-bottom: 6rem !important;
     padding-left: 4rem !important;
     padding-right: 4rem !important;
 }
@@ -146,6 +146,76 @@ div.stButton>button p {
     width: auto;
 }
 
+.tentang-band {
+    background: #F0E6D2;
+    border-top: 1px solid #E6D9C3;
+    border-bottom: 1px solid #E6D9C3;
+    border-radius: 16px;
+    padding: 40px 32px;
+    margin: 40px 0 16px;
+}
+
+.tentang-heading {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+    color: #171717;
+    margin-bottom: 12px;
+}
+
+.tentang-band .tentang-intro {
+    display: block;
+    max-width: 760px;
+    margin: 0 auto 28px;
+    text-align: center;
+    color: #4a4038;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.tentang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+.tentang-card {
+    position: relative;
+    background: #FFFCF7;
+    border: 1px solid #E6D9C3;
+    border-top: 4px solid #7A1F2B;
+    border-radius: 12px;
+    padding: 22px 22px 24px;
+    height: 100%;
+}
+
+.tentang-no {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #B08A4A;
+    margin-bottom: 6px;
+}
+
+.tentang-judul {
+    font-size: 17px;
+    font-weight: 700;
+    color: #7A1F2B;
+    margin-bottom: 10px;
+}
+
+.tentang-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #2B2B2B;
+    text-align: justify;
+}
+
 .motif-card {
     border: 2px solid #E6D9C3;
     border-radius: 12px;
@@ -217,6 +287,57 @@ div.stButton>button p {
 .st-key-prev_motif div.stButton>button:hover p,
 .st-key-next_motif div.stButton>button:hover p {
     color: #737373 !important;
+}
+
+.st-key-panduan_band {
+    background: #F0E6D2;
+    border: 1px solid #E6D9C3;
+    border-radius: 14px;
+    padding: 28px 40px;
+    margin: 32px auto 16px;
+    max-width: 900px;
+    box-sizing: border-box;
+}
+
+.panduan-judul {
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -0.3px;
+    color: #171717;
+    margin-bottom: 4px;
+}
+
+.panduan-teks {
+    margin: 0 0 4px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4a4038;
+}
+
+.st-key-panduan_band [data-testid="stDownloadButton"] {
+    display: flex;
+    justify-content: center;
+}
+
+.st-key-panduan_band [data-testid="stDownloadButton"] button,
+.st-key-panduan_band [data-testid="stDownloadButton"] button:focus {
+    background: #7A1F2B !important;
+    border: 1px solid #7A1F2B !important;
+    border-radius: 6px !important;
+    min-height: 46px;
+    padding: 8px 26px;
+    box-shadow: none !important;
+}
+
+.st-key-panduan_band [data-testid="stDownloadButton"] button:hover {
+    background: #a72b3c !important;
+    border-color: #a72b3c !important;
+}
+
+.st-key-panduan_band [data-testid="stDownloadButton"] button *,
+.st-key-panduan_band [data-testid="stDownloadButton"] button p {
+    color: #FAF6EF !important;
+    font-weight: 600;
 }
 
 /* Halaman Klasifikasi */
@@ -774,8 +895,12 @@ div[class*="st-key-infogambar_"] [data-testid="stElementContainer"]:has(button) 
     }
 
     .section-heading {
-        font-size: 20px !important;
-        margin-top: 6px;
+        font-size: 30px;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+        margin: 22px 0 8px;
+        text-align: center;
+        width: 100%;
     }
 
     .footer {
@@ -901,6 +1026,41 @@ div[class*="st-key-infogambar_"] [data-testid="stElementContainer"]:has(button) 
 
     .card-meta {
         font-size: 12px;
+    }
+
+    .tentang-band {
+        padding: 24px 16px;
+        margin-top: 24px;
+    }
+
+    .tentang-heading {
+        font-size: 20px;
+    }
+
+    .tentang-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .st-key-panduan_band {
+        padding: 20px 16px;
+        margin-top: 24px;
+    }
+
+    .panduan-judul {
+        font-size: 18px;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(.panduan-judul) {
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        gap: 1rem !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(.panduan-judul)>div {
+        width: 100% !important;
+        min-width: 0 !important;
+        flex: 0 0 auto !important;
     }
 
     div[data-testid="stHorizontalBlock"]:has(.st-key-panel_upload)>div:not(:has(.st-key-panel_upload)) {
